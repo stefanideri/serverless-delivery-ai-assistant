@@ -1,0 +1,17 @@
+{
+  "order_id": "PED-1003",
+  "customer": {
+    "name": "Cliente Exemplo",
+    "address": "São Paulo - SP",
+    "phone": "+55 11 99999-9999"
+  },
+  "items": [
+    {
+      "name": "Hambúrguer Artesanal",
+      "quantity": 1,
+      "price": 38.5
+    }
+  ],
+  "payment_status": "declined"
+}
+

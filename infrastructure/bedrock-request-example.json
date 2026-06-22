@@ -1,0 +1,11 @@
+{
+  "modelId": "your-bedrock-model-id",
+  "contentType": "application/json",
+  "accept": "application/json",
+  "body": {
+    "prompt": "Gere uma mensagem curta, clara e amigável para o cliente Ana informando que o pedido PED-2001 foi confirmado e está em preparação.",
+    "max_tokens": 120,
+    "temperature": 0.4
+  }
+}
+

@@ -1,0 +1,8 @@
+{
+  "order_id": "PED-1001",
+  "status": "confirmed",
+  "message": "Olá, Thiago! Seu pedido PED-1001 foi confirmado e já está em preparação. Avisaremos quando sair para entrega.",
+  "bedrock_prompt": "Gere uma mensagem curta, clara e amigável em português para o cliente Thiago, informando que o pedido PED-1001 com Pizza Calabresa, Refrigerante está com o status 'confirmed'. A mensagem deve ser adequada para um assistente de delivery e não deve incluir dados sensíveis.",
+  "next_step": "Atualizar status para preparing"
+}
+

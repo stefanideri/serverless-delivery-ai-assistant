@@ -1,0 +1,111 @@
+{
+  "Comment": "Definição educacional de uma Step Function para um assistente de delivery com Amazon Bedrock. Revisar recursos, payloads e permissões antes de uso em produção.",
+  "StartAt": "ReceiveOrder",
+  "States": {
+    "ReceiveOrder": {
+      "Type": "Pass",
+      "Comment": "Recebe o pedido enviado por uma camada externa, como API Gateway ou Lambda.",
+      "Next": "ValidateOrder"
+    },
+    "ValidateOrder": {
+      "Type": "Choice",
+      "Comment": "Validação demonstrativa. Em produção, a validação pode ficar em uma função Lambda dedicada.",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.customer.name",
+              "IsPresent": true
+            },
+            {
+              "Variable": "$.customer.address",
+              "IsPresent": true
+            },
+            {
+              "Variable": "$.items[0]",
+              "IsPresent": true
+            }
+          ],
+          "Next": "CheckPaymentStatus"
+        }
+      ],
+      "Default": "InvalidOrder"
+    },
+    "CheckPaymentStatus": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.payment_status",
+          "StringEquals": "approved",
+          "Next": "GenerateCustomerMessageWithBedrock"
+        },
+        {
+          "Variable": "$.payment_status",
+          "StringEquals": "declined",
+          "Next": "PaymentDeclined"
+        },
+        {
+          "Variable": "$.payment_status",
+          "StringEquals": "pending",
+          "Next": "PaymentPending"
+        }
+      ],
+      "Default": "WorkflowFailed"
+    },
+    "GenerateCustomerMessageWithBedrock": {
+      "Type": "Task",
+      "Comment": "Exemplo demonstrativo. O body varia conforme o foundation model escolhido e o modelId deve existir na região da conta AWS.",
+      "Resource": "arn:aws:states:::bedrock:invokeModel",
+      "Parameters": {
+        "ModelId": "your-bedrock-model-id",
+        "ContentType": "application/json",
+        "Accept": "application/json",
+        "Body": {
+          "prompt.$": "States.Format('Gere uma mensagem curta e amigável para o cliente {} sobre o pedido {} confirmado.', $.customer.name, $.order_id)",
+          "max_tokens": 120,
+          "temperature": 0.4
+        }
+      },
+      "ResultPath": "$.bedrock_result",
+      "Next": "UpdateOrderStatus",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "WorkflowFailed"
+        }
+      ]
+    },
+    "UpdateOrderStatus": {
+      "Type": "Pass",
+      "Result": {
+        "status": "preparing"
+      },
+      "ResultPath": "$.current_status",
+      "Next": "ConfirmDelivery"
+    },
+    "ConfirmDelivery": {
+      "Type": "Succeed",
+      "Comment": "Fim demonstrativo do fluxo. Em produção, novos estados poderiam acompanhar saída para entrega e confirmação final."
+    },
+    "InvalidOrder": {
+      "Type": "Succeed",
+      "Comment": "Pedido inválido encerrado sem chamar Bedrock."
+    },
+    "PaymentDeclined": {
+      "Type": "Succeed",
+      "Comment": "Pagamento recusado encerrado sem chamar Bedrock."
+    },
+    "PaymentPending": {
+      "Type": "Succeed",
+      "Comment": "Pagamento pendente aguardaria nova confirmação em uma arquitetura real."
+    },
+    "WorkflowFailed": {
+      "Type": "Fail",
+      "Error": "DeliveryWorkflowFailed",
+      "Cause": "O fluxo não pôde ser concluído com os dados informados."
+    }
+  }
+}
+

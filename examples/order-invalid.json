@@ -1,0 +1,11 @@
+{
+  "order_id": "PED-1002",
+  "customer": {
+    "name": "",
+    "address": "",
+    "phone": ""
+  },
+  "items": [],
+  "payment_status": "approved"
+}
+
