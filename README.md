@@ -1,5 +1,7 @@
 # Serverless Delivery AI Assistant
 
+[![Python Tests](https://github.com/Thiago-Schoingele/serverless-delivery-ai-assistant/actions/workflows/python-tests.yml/badge.svg?branch=main)](https://github.com/Thiago-Schoingele/serverless-delivery-ai-assistant/actions/workflows/python-tests.yml)
+
 Assistente de delivery sem servidor com AWS Step Functions e Amazon Bedrock.
 
 ## Visão geral
