@@ -62,13 +62,13 @@ flowchart TD
 
 ```text
 serverless-delivery-ai-assistant/
-├── README.md
-├── docs/
-├── examples/
-├── infrastructure/
-├── scripts/
-├── src/delivery_ai_assistant/
-└── tests/
+|-- README.md
+|-- docs/
+|-- examples/
+|-- infrastructure/
+|-- scripts/
+|-- src/delivery_ai_assistant/
+`-- tests/
 ```
 
 ## Como executar localmente
@@ -136,4 +136,3 @@ O corpo da requisição do Bedrock pode variar conforme o foundation model escol
 ## Autor
 
 Thiago Schoingele
-
