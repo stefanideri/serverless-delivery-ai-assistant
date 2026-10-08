@@ -1,16 +1,25 @@
-import sys
-from pathlib import Path
+import importlib.util
 import inspect
+from pathlib import Path
+import sys
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_PATH = PROJECT_ROOT / "src"
 TESTS_PATH = PROJECT_ROOT / "tests"
 
-sys.path.insert(0, str(SRC_PATH))
-sys.path.insert(0, str(TESTS_PATH))
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
 
-import test_validation
-import test_workflow_simulator
+
+def load_module_from_file(module_name: str, file_path: Path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Não foi possível carregar {file_path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
 
 def run_module_tests(module):
     passed = 0
@@ -27,11 +36,15 @@ def run_module_tests(module):
     return passed, failed
 
 def main():
+    test_validation = load_module_from_file("test_validation", TESTS_PATH / "test_validation.py")
+    test_workflow_simulator = load_module_from_file("test_workflow_simulator", TESTS_PATH / "test_workflow_simulator.py")
+
     print("Executando testes do Delivery AI Assistant...")
     print("\nTestes de validação:")
     p1, f1 = run_module_tests(test_validation)
     print("\nTestes do simulador de workflow:")
     p2, f2 = run_module_tests(test_workflow_simulator)
+
     
     total_passed = p1 + p2
     total_failed = f1 + f2
