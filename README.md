@@ -1,6 +1,5 @@
 # Serverless Delivery AI Assistant
 
-[![Python Tests](https://github.com/Thiago-Schoingele/serverless-delivery-ai-assistant/actions/workflows/python-tests.yml/badge.svg?branch=main)](https://github.com/Thiago-Schoingele/serverless-delivery-ai-assistant/actions/workflows/python-tests.yml)
 
 Assistente de delivery sem servidor com AWS Step Functions e Amazon Bedrock.
 
@@ -79,16 +78,13 @@ Crie e ative um ambiente virtual, instale as dependências e execute os testes:
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-python -m pytest
-```
-
-Execute a simulação com um pedido aprovado:
-
 ```powershell
+python scripts/run_tests.py
 python scripts/run_demo.py examples/order-approved.json
 ```
 
 ## Exemplos de entrada
+
 
 Os arquivos em `examples/` incluem:
 
@@ -133,6 +129,6 @@ O corpo da requisição do Bedrock pode variar conforme o foundation model escol
 - Deploy com SAM, CDK ou Terraform.
 - Testes de carga e observabilidade de custos.
 
-## Autor
+## Autora
 
-Thiago Schoingele
+Stefani Deri
